@@ -9,11 +9,12 @@
          <div class="col-md-6 offset-md-3">
             <div class="border bg-white p-3">
                 <h3>Login Page</h3>
-                <form method="POST">
+                <form method="POST" class="mb-2">
                     {% csrf_token %}
                     {{ form|crispy }}
                     <input class="btn btn-success" type="submit" value="Login">
                 </form>
+                <a href="{% url 'password_reset' %}">Forgot Password?</a>
             </div>
          </div>
     </div>

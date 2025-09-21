@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .forms import CreateRegisterForm
+from django.contrib.auth import views
+from .forms import CreateRegisterForm, UpdateUserForm, UpdateUserProfileForm
 
 # Create your views here.
 def register(request):
@@ -20,3 +20,24 @@ def register(request):
 
 def profile(request):
     return render(request, 'user/profile.html')
+ 
+def profile_update(request):
+    if request.method == 'POST':
+        userform = UpdateUserForm(request.POST, instance=request.user)
+        profileform = UpdateUserProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        if userform.is_valid() and profileform.is_valid():
+            userform.save()
+            profileform.save()
+            onEdit = False
+    else: 
+        userform = UpdateUserForm(instance=request.user)
+        profileform = UpdateUserProfileForm(instance=request.user.profile)
+        onEdit = True
+
+    context = {
+        'userform': userform,
+        'profileform': profileform,
+        'onEdit': onEdit
+    }
+
+    return render(request, 'user/profile_update_form.html', context)

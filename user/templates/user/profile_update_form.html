@@ -1,0 +1,43 @@
+{% load crispy_forms_tags %}
+<div class="row" hx-target="this" hx-swap="outerHTML">
+    {% if onEdit %}
+    <div class="col-md-8">
+        <span class="h4"> Profile Information</span>
+        <hr>
+        <form hx-post="{% url 'user-update-profile' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ userform|crispy }}
+            {{ profileform|crispy }}
+            <input type="submit" value="Update">
+        </form>
+    </div> 
+    {% else %}
+    <div class="col-md-8" >
+        <span class="h4"> Profile Information</span> <button class="btn btn-info btn-sm float-right" hx-get="{% url 'user-update-profile' %}">Edit</button>
+        <hr>
+        <table class="table bg-white table-borderless">
+            <tbody>
+                <tr>
+                    <th scope="row">Name</th>
+                    <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Email</th>
+                    <td>{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Phone</th>
+                    <td>{{ user.profile.phone_number }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Address</th>
+                    <td>{{ user.profile.address }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <img class="img-thumbnail" src="{{ user.profile.image.url }}" alt="">
+    </div>
+    {% endif %}
+</div>
