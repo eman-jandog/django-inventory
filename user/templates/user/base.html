@@ -1,0 +1,229 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+      @theme {
+        --color-primary: #3B82F6;
+        --color-secondary: #1E40AF;
+      }
+    </style>
+    
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body class="bg-gray-50 font-sans">
+        <div id="authContainer" class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-100">
+        <div class="min-h-screen flex items-center justify-center py-4 px-4 sm:py-12 sm:px-6 lg:px-8">
+            <div class="max-w-md w-full space-y-4 sm:space-y-8">
+                <!-- Header -->
+                <div class="text-center">
+                    <div class="mx-auto h-12 w-12 sm:h-16 sm:w-16 bg-primary rounded-xl flex items-center justify-center mb-3 sm:mb-4">
+                        <svg class="h-6 w-6 sm:h-8 sm:w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">AssetTrack</h2>
+                    <p class="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-600">Professional Asset Management System</p>
+                </div>
+
+                <!-- Toggle Buttons -->
+                <div class="flex bg-gray-100 rounded-lg p-1 mb-4 sm:mb-6">
+                    <button id="loginTab" onclick="showLogin()" class="flex-1 py-2 px-2 sm:px-4 text-xs sm:text-sm font-medium rounded-md transition-all duration-200 bg-white text-primary shadow-sm">
+                        Sign In
+                    </button>
+                    <button id="registerTab" onclick="showRegister()" class="flex-1 py-2 px-2 sm:px-4 text-xs sm:text-sm font-medium rounded-md hover:text-gray-700 transition-all duration-200 text-gray-500">
+                        Sign Up
+                    </button>
+                </div>
+
+                <!-- Login Form -->
+                <div id="loginForm" class="bg-white rounded-2xl shadow-xl p-4 sm:p-8 border border-gray-100">
+                    <div class="mb-4 sm:mb-6">
+                        <h3 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-1 sm:mb-2">Welcome back</h3>
+                        <p class="text-sm sm:text-base text-gray-600">Please sign in to your account</p>
+                    </div>
+
+                    {% block form_content %}{% endblock %}
+
+                    <!-- Demo Credentials -->
+                    <div class="mt-4 sm:mt-6 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
+                        <h4 class="text-xs sm:text-sm font-medium text-blue-800 mb-1 sm:mb-2">Demo Credentials</h4>
+                        <div class="text-xs text-blue-700 space-y-1">
+                            <div class="break-all"><strong>Admin:</strong> admin@assettrack.com / admin123</div>
+                            <div class="break-all"><strong>User:</strong> user@assettrack.com / user123</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Register Form -->
+                <div id="registerForm" class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 hidden">
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-2">Create account</h3>
+                        <p class="text-gray-600">Join AssetTrack to manage your assets efficiently</p>
+                    </div>
+
+                    <form class="space-y-6" onsubmit="handleRegister(event)">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">
+                                    First name
+                                </label>
+                                <input id="firstName" name="firstName" type="text" required="" class="block w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="John">
+                            </div>
+                            <div>
+                                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">
+                                    Last name
+                                </label>
+                                <input id="lastName" name="lastName" type="text" required="" class="block w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="Doe">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="registerEmail" class="block text-sm font-medium text-gray-700 mb-2">
+                                Email address
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                                    </svg>
+                                </div>
+                                <input id="registerEmail" name="email" type="email" required="" class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="john.doe@company.com">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="company" class="block text-sm font-medium text-gray-700 mb-2">
+                                Company
+                            </label>
+                            <input id="company" name="company" type="text" required="" class="block w-full px-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="Your Company Name">
+                        </div>
+
+                        <div>
+                            <label for="registerPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                                Password
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <input id="registerPassword" name="password" type="password" required="" class="block w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="Create a strong password">
+                                <button type="button" onclick="togglePassword('registerPassword')" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                                    <svg class="h-5 w-5 text-gray-400 hover:text-gray-600" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="mt-2">
+                                <div class="text-xs text-gray-500">Password must contain:</div>
+                                <ul class="text-xs text-gray-500 mt-1 space-y-1">
+                                    <li id="length" class="flex items-center">
+                                        <span class="w-2 h-2 bg-gray-300 rounded-full mr-2"></span>
+                                        At least 8 characters
+                                    </li>
+                                    <li id="uppercase" class="flex items-center">
+                                        <span class="w-2 h-2 bg-gray-300 rounded-full mr-2"></span>
+                                        One uppercase letter
+                                    </li>
+                                    <li id="number" class="flex items-center">
+                                        <span class="w-2 h-2 bg-gray-300 rounded-full mr-2"></span>
+                                        One number
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">
+                                Confirm password
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <input id="confirmPassword" name="confirmPassword" type="password" required="" class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="Confirm your password">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <input id="agreeTerms" name="agreeTerms" type="checkbox" required="" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+                            <label for="agreeTerms" class="ml-2 block text-sm text-gray-700">
+                                I agree to the <a href="#" class="text-primary hover:text-secondary">Terms of Service</a> and 
+                                <a href="#" class="text-primary hover:text-secondary">Privacy Policy</a>
+                            </label>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 transform hover:scale-105">
+                                <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                                    <svg class="h-5 w-5 text-blue-300 group-hover:text-blue-200" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6z"></path>
+                                    </svg>
+                                </span>
+                                Create AssetTrack Account
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Forgot Password Form -->
+                <div id="forgotForm" class="bg-white rounded-2xl shadow-xl p-8 border border-gray-100 hidden">
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-2">Reset password</h3>
+                        <p class="text-gray-600">Enter your email to receive reset instructions</p>
+                    </div>
+
+                    <form class="space-y-6" onsubmit="handleForgotPassword(event)">
+                        <div>
+                            <label for="forgotEmail" class="block text-sm font-medium text-gray-700 mb-2">
+                                Email address
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path>
+                                        <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path>
+                                    </svg>
+                                </div>
+                                <input id="forgotEmail" name="email" type="email" required="" class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-colors" placeholder="Enter your email">
+                            </div>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200">
+                                Send Reset Instructions
+                            </button>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="button" onclick="showLogin()" class="text-sm text-primary hover:text-secondary">
+                                ← Back to sign in
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Footer -->
+                <div class="text-center text-sm text-gray-500">
+                    <p>© 2024 AssetTrack. All rights reserved.</p>
+                    <div class="mt-2 space-x-4">
+                        <a href="#" class="hover:text-gray-700">Privacy Policy</a>
+                        <a href="#" class="hover:text-gray-700">Terms of Service</a>
+                        <a href="#" class="hover:text-gray-700">Support</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,6 +42,7 @@ INSTALLED_APPS = [
     'user',
     'crispy_forms',
     "crispy_bootstrap5",
+    "crispy_tailwind",
     "debug_toolbar",
 ]
 
@@ -78,7 +80,9 @@ INTERNAL_IPS = [
     # ...
 ]
 
-CRISPY_TEMPLATE_PACK = 'bootstrap5'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+
+CRISPY_TEMPLATE_PACK = "tailwind"
 
 WSGI_APPLICATION = 'inventory.wsgi.application'
 
@@ -129,9 +133,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
-
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    os.path.join(BASE_DIR, 'static'),  # Project-wide static dir
 ]
 
 # Default primary key field type
