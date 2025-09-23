@@ -2,7 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import views
 from .forms import CreateRegisterForm, UpdateUserForm, UpdateUserProfileForm
 
-# Create your views here.
+def index(request):
+    return render(request, 'user/auth/base.html') 
+
 def register(request):
     if request.method == 'POST':
         form = CreateRegisterForm(request.POST)
@@ -16,7 +18,10 @@ def register(request):
         'form': form
     }
 
-    return render(request, 'user/register.html', context)
+    return render(request, 'user/auth/register.html', context)
+
+def reset(request):
+    return render(request, 'user/auth/reset.html')
 
 def profile(request):
     return render(request, 'user/profile.html')

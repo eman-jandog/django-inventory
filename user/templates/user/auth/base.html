@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.7/dist/htmx.min.js" integrity="sha384-ZBXiYtYQ6hJ2Y0ZNoYuI+Nq5MqWBr+chMrS/RkXpNzQCApHEhOt2aY8EJgqwHLkJ" crossorigin="anonymous"></script>
+    <style type="text/tailwindcss">
+      @theme {
+        --color-primary: #3B82F6;
+        --color-secondary: #1E40AF;
+      }
+    </style>
+    
+    <title>AssetTrack Account</title>
+</head>
+<body class="bg-gray-50 font-sans">
+        <div id="authContainer" class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-100">
+        <div class="min-h-screen flex items-center justify-center py-4 px-4 sm:py-12 sm:px-6 lg:px-8">
+            <div class="max-w-md w-full space-y-4 sm:space-y-8">
+                <!-- Header -->
+                <div class="text-center">
+                    <div class="mx-auto h-12 w-12 sm:h-16 sm:w-16 bg-primary rounded-xl flex items-center justify-center mb-3 sm:mb-4">
+                        <svg class="h-6 w-6 sm:h-8 sm:w-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">AssetTrack</h2>
+                    <p class="mt-1 sm:mt-2 text-xs sm:text-sm text-gray-600">Professional Asset Management System</p>
+                </div>
+
+                <!-- Toggle Buttons -->
+                <div class="flex bg-gray-100 rounded-lg p-1 mb-4 sm:mb-6" role="tablist"
+                    hx-target="#accountForm"
+                    hx-on::after-on-load="
+                        let currentTab = document.querySelector('[aria-selected=true]');
+                        currentTab.setAttribute('aria-selected', 'false')
+                        currentTab.classList.remove('bg-white', 'text-primary', 'shadow-sm')    
+                        currentTab.classList.add('text-gray-500')
+                        let newTab = event.target
+                        newTab.setAttribute('aria-selected', 'true')
+                        newTab.classList.add('bg-white', 'text-primary', 'shadow-sm')
+                        newTab.classList.remove('text-gray-500')">
+                    <button id="loginTab" hx-get="{% url 'user-login' %}" aria-selected="true" aria-controls="accountForm" class="flex-1 py-2 px-2 sm:px-4 text-xs sm:text-sm font-medium rounded-md transition-all duration-200 bg-white text-primary shadow-sm" role="tab">
+                        Sign In
+                    </button>
+                    <button id="registerTab" hx-get="{% url 'user-register' %}" aria-selected="false" aria-controls="accountForm" class="flex-1 py-2 px-2 sm:px-4 text-xs sm:text-sm font-medium rounded-md hover:text-gray-700 transition-all duration-200 text-gray-500" role="tab">
+                        Sign Up
+                    </button>
+                </div>
+
+                <!-- Form -->
+                <div id="accountForm" hx-get="{% url 'user-login' %}" hx-trigger="load"  class="bg-white rounded-2xl shadow-xl p-4 sm:p-8 border border-gray-100">
+                </div>
+
+                <!-- Footer -->
+                <div class="text-center text-sm text-gray-500">
+                    <p>© 2024 AssetTrack. All rights reserved.</p>
+                    <div class="mt-2 space-x-4">
+                        <a href="#" class="hover:text-gray-700">Privacy Policy</a>
+                        <a href="#" class="hover:text-gray-700">Terms of Service</a>
+                        <a href="#" class="hover:text-gray-700">Support</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

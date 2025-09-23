@@ -1,35 +1,44 @@
-{% extends "user/base.html" %}
 {% load tailwind_filters %}
-{% block title %}
-    Login Page
-{% endblock %}
-{% block form_content %}
-    <form method="post" class="space-y-4 sm:space-y-6">
-        {% csrf_token %}
-        {{ form|crispy }}
-        <div class="flex items-center justify-between">
-            <div class="flex items-center">
-                <input id="rememberMe" name="rememberMe" type="checkbox" class="h-3 w-3 sm:h-4 sm:w-4 text-primary focus:ring-primary border-gray-300 rounded">
-                <label for="rememberMe" class="ml-2 block text-xs sm:text-sm text-gray-700">
-                    Remember me
-                </label>
-            </div>
-            <div class="text-xs sm:text-sm">
-                <a href="#" onclick="showForgotPassword()" class="font-medium text-primary hover:text-secondary transition-colors">
-                    Forgot password?
-                </a>
-            </div>
-        </div>
+<div class="mb-4 sm:mb-6">
+    <h3 class="text-xl sm:text-2xl font-semibold text-gray-900 mb-1 sm:mb-2">Welcome back</h3>
+    <p class="text-sm sm:text-base text-gray-600">Please sign in to your account</p>
+</div>
 
-        <div>
-            <button type="submit" class="group relative w-full flex justify-center py-2.5 sm:py-3 px-4 border border-transparent text-xs sm:text-sm font-medium rounded-lg text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 transform hover:scale-105">
-                <span class="absolute left-0 inset-y-0 flex items-center pl-2 sm:pl-3">
-                    <svg class="h-4 w-4 sm:h-5 sm:w-5 text-blue-300 group-hover:text-blue-200" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
-                    </svg>
-                </span>
-                Sign in to AssetTrack
-            </button>
+<!-- Form -->
+<form method="post" class="space-y-4 sm:space-y-6">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <div class="flex items-center justify-between">
+        <div class="flex items-center">
+            <input id="rememberMe" name="rememberMe" type="checkbox" class="h-3 w-3 sm:h-4 sm:w-4 text-primary focus:ring-primary border-gray-300 rounded">
+            <label for="rememberMe" class="ml-2 block text-xs sm:text-sm text-gray-700">
+                Remember me
+            </label>
         </div>
-    </form>
-{% endblock %}
+        <div class="text-xs sm:text-sm">
+            <a href="#" hx-target="#accountForm" hx-get="{% url 'user-reset' %}" class="font-medium text-primary hover:text-secondary transition-colors">
+                Forgot password?
+            </a>
+        </div>
+    </div>
+
+    <div>
+        <button type="submit" class="group relative w-full flex justify-center py-2.5 sm:py-3 px-4 border border-transparent text-xs sm:text-sm font-medium rounded-lg text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 transform hover:scale-105">
+            <span class="absolute left-0 inset-y-0 flex items-center pl-2 sm:pl-3">
+                <svg class="h-4 w-4 sm:h-5 sm:w-5 text-blue-300 group-hover:text-blue-200" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"></path>
+                </svg>
+            </span>
+            Sign in to AssetTrack
+        </button>
+    </div>
+</form>
+
+<!-- Demo Credentials -->
+<div class="mt-4 sm:mt-6 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
+    <h4 class="text-xs sm:text-sm font-medium text-blue-800 mb-1 sm:mb-2">Demo Credentials</h4>
+    <div class="text-xs text-blue-700 space-y-1">
+        <div class="break-all"><strong>Admin:</strong> admin@assettrack.com / admin123</div>
+        <div class="break-all"><strong>User:</strong> user@assettrack.com / user123</div>
+    </div>
+</div>

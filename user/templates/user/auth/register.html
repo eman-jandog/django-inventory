@@ -1,0 +1,30 @@
+{% load tailwind_filters %}
+<!-- Register Form -->
+<div class="mb-6">
+    <h3 class="text-2xl font-semibold text-gray-900 mb-2">Create account</h3>
+    <p class="text-gray-600">Join AssetTrack to manage your assets efficiently</p>
+</div>
+
+<form method="post" class="space-y-6" onsubmit="handleRegister(event)">
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <div class="flex items-center">
+        <input id="agreeTerms" name="agreeTerms" type="checkbox" required="" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
+        <label for="agreeTerms" class="ml-2 block text-sm text-gray-700">
+            I agree to the <a href="#" class="text-primary hover:text-secondary">Terms of Service</a> and 
+            <a href="#" class="text-primary hover:text-secondary">Privacy Policy</a>
+        </label>
+    </div>
+
+    <div>
+        <button type="submit" class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary transition-all duration-200 transform hover:scale-105">
+            <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+                <svg class="h-5 w-5 text-blue-300 group-hover:text-blue-200" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6z"></path>
+                </svg>
+            </span>
+            Create AssetTrack Account
+        </button>
+    </div>
+</form>
