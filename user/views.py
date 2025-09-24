@@ -1,15 +1,37 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import views
+from django.shortcuts import render, redirect, resolve_url
+from django.http import HttpResponse
+from django.contrib.auth.views import LoginView as BaseLoginView
 from .forms import CreateRegisterForm, UpdateUserForm, UpdateUserProfileForm
 
+# Class based functions
+class LoginView(BaseLoginView):
+    template_name = 'user/auth/login.html'
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+
+        if self.request.headers.get('HX-Request'):
+            redirect_url = resolve_url(self.get_success_url())
+            hx_response = HttpResponse()
+            hx_response['HX-Redirect'] = redirect_url
+            return hx_response
+        
+        return response
+
 def index(request):
-    return render(request, 'user/auth/base.html') 
+    return render(request, 'user/auth/page.html') 
 
 def register(request):
     if request.method == 'POST':
         form = CreateRegisterForm(request.POST)
         if form.is_valid():
             form.save()
+
+            if request.headers.get("HX-Request"):
+                response = HttpResponse()
+                response['HX-Redirect'] = redirect('dashboard-home').url
+                return response
+
             return redirect('dashboard-home')
     else:
         form = CreateRegisterForm()
@@ -21,7 +43,7 @@ def register(request):
     return render(request, 'user/auth/register.html', context)
 
 def reset(request):
-    return render(request, 'user/auth/reset.html')
+    return render(request, 'user/auth/password_reset.html')
 
 def profile(request):
     return render(request, 'user/profile.html')

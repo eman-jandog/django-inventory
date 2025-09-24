@@ -5,7 +5,7 @@
 </div>
 
 <!-- Form -->
-<form method="post" class="space-y-4 sm:space-y-6">
+<form hx-post='{% url "user-login" %}' hx-target="#accountForm" class="space-y-4 sm:space-y-6">
     {% csrf_token %}
     {{ form|crispy }}
     <div class="flex items-center justify-between">
@@ -16,7 +16,7 @@
             </label>
         </div>
         <div class="text-xs sm:text-sm">
-            <a href="#" hx-target="#accountForm" hx-get="{% url 'user-reset' %}" class="font-medium text-primary hover:text-secondary transition-colors">
+            <a href="#" hx-target="#accountForm" hx-get="{% url 'password_reset' %}" class="font-medium text-primary hover:text-secondary transition-colors">
                 Forgot password?
             </a>
         </div>
