@@ -5,18 +5,18 @@
 </div>
 
 <!-- Form -->
-<form hx-post='{% url "user-login" %}' hx-target="#accountForm" class="space-y-4 sm:space-y-6">
+<form hx-post='{% url "user-login" %}' class="space-y-4 sm:space-y-6">
     {% csrf_token %}
     {{ form|crispy }}
     <div class="flex items-center justify-between">
         <div class="flex items-center">
             <input id="rememberMe" name="rememberMe" type="checkbox" class="h-3 w-3 sm:h-4 sm:w-4 text-primary focus:ring-primary border-gray-300 rounded">
-            <label for="rememberMe" class="ml-2 block text-xs sm:text-sm text-gray-700">
+            <label for="rememberMe"class="ml-2 block text-xs sm:text-sm text-gray-700">
                 Remember me
             </label>
         </div>
         <div class="text-xs sm:text-sm">
-            <a href="#" hx-target="#accountForm" hx-get="{% url 'password_reset' %}" class="font-medium text-primary hover:text-secondary transition-colors">
+            <a href="#" hx-get="{% url 'password_reset' %}" class="font-medium text-primary hover:text-secondary transition-colors">
                 Forgot password?
             </a>
         </div>

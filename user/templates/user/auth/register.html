@@ -5,7 +5,7 @@
     <p class="text-gray-600">Join AssetTrack to manage your assets efficiently</p>
 </div>
 
-<form hx-post="{% url 'user-register' %}" hx-target="#accountForm" class="space-y-6">
+<form hx-post="{% url 'user-register' %}" class="space-y-6">
     {% csrf_token %}
     {{ form|crispy }}
 
