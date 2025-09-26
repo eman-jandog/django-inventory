@@ -2,7 +2,6 @@ from django.forms import ModelForm
 from .models import Product, Order
 
 class ProductForm(ModelForm):
-
     class Meta:
         model = Product
         fields = ['name','quantity','category']
