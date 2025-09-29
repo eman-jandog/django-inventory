@@ -1,7 +1,20 @@
+function handleLogout() {
+    // localStorage.removeItem('userEmail');
+    // localStorage.removeItem('isLoggedIn');
+    
+    // Show auth container and hide dashboard
+    document.getElementById('dashboardContainer').classList.add('hidden');
+    // document.getElementById('authContainer').classList.remove('hidden');
+    
+    // Reset forms
+    document.getElementById('loginFormElement').reset();
+    document.getElementById('registerFormElement').reset();
+    showLoginForm();
+}
+
 function toggleSidebarMode() {
-    const sidebar = document.getElementById('sidebar');
-    const fullSidebar = document.getElementById('fullSidebar');
-    // const mainContent = document.getElementById('mainContent');
+    const sidebar = document.getElementById('sidebar'); 
+    const mainContent = document.getElementById('mainContent');
 
     const isCompact = !sidebar.classList.contains('w-64');
 
@@ -9,13 +22,14 @@ function toggleSidebarMode() {
         // Switch to compact sidebar
         sidebar.classList.remove('w-16');
         sidebar.classList.add('w-64');
-        
-
+        mainContent.classList.remove('lg:ml-16');
+        mainContent.classList.add('lg:ml-64');      
     } else {
         // Switch to full sidebar
         sidebar.classList.remove('w-64');
         sidebar.classList.add('w-16');
-        
+        mainContent.classList.remove('lg:ml-64');
+        mainContent.classList.add('lg:ml-16');  
     }
 }
 
@@ -50,8 +64,9 @@ function toggleUserMenu() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('expandSidebar').addEventListener('click', toggleSidebarMode);
-    document.getElementById('btnProfile').addEventListener('click', toggleUserMenu);
+    document.getElementById('sidebarToggle').addEventListener('click', toggleSidebarMode);
+    document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+    document.getElementById('profileBtn').addEventListener('click', toggleUserMenu);
 
     document.querySelectorAll('.nav-item').forEach(item => {
         item.addEventListener('click', () => {
@@ -66,13 +81,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!userMenu.classList.contains('hidden')) {
             const userButton = event.target.closest('button');  
             
-            if (!userButton || userButton.getAttribute('id') != 'btnProfile') {
+            if (!userButton || userButton.getAttribute('id') != 'profileBtn') {
                 userMenu.classList.add('hidden');
             }
         }
     });
 
     showSection('overview')
+    toggleSidebarMode()
 })
 
 

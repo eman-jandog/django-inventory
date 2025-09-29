@@ -1,116 +1,840 @@
 {% extends "partials/base.html" %}
 {% block title %}
-Home Page
+AssetTrack Home
 {% endblock %}
 {% block content %}
-    <!--Topside-->
-    {% if user.is_authenticated and user.is_staff and user.is_superuser%}
-    {% include 'partials/topnav.html' %}
-    <!--End Topside-->
-
-    <!--Graphs-->
-    <div class="container">
-        <div class="row my-5">
-            <div class="col-md-6">
-                <div class="bg-white">
-                    <canvas id="myChart1" width="400" height="300"></canvas>
-                    <script>
-                        var ctx = document.getElementById('myChart1').getContext('2d');
-                        var myChart1 = new Chart(ctx, {
-                            type: 'pie',
-                            data: {
-                                labels: [{% for order in orders %} "{{ order.product__name }}", {% endfor %}],
-                                datasets: [{
-                                    label: 'Products',
-                                    data: [{% for order in orders %} {{ order.order_quantity }}, {% endfor %}],
-                                    backgroundColor: [
-                                        'rgba(255, 99, 132, 1)',
-                                        'rgba(54, 162, 235, 1)',
-                                        'rgba(255, 206, 86, 1)',
-                                        'rgba(75, 192, 192, 1)',
-                                        'rgba(153, 102, 255, 1)',
-                                        'rgba(255, 159, 64, 1)',
-                                        'rgba(255, 206, 86, 1)',
-                                        'rgba(75, 192, 192, 1)',
-                                        'rgba(153, 102, 255, 1)',
-                                    ],
-                                    borderColor: [
-                                        'rgba(255, 99, 132, 1)',
-                                        'rgba(54, 162, 235, 1)',
-                                        'rgba(255, 206, 86, 1)',
-                                        'rgba(75, 192, 192, 1)',
-                                        'rgba(153, 102, 255, 1)',
-                                        'rgba(255, 159, 64, 1)',
-                                        
-                                    ],
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true
-                                        }
-                                    }]
-                                }
-                            }
-                        });
-                    </script>
+    <div id="mainContent" class="min-h-screen flex flex-col transition-all duration-300 lg:ml-16">
+        <!-- Header -->
+        <header class="bg-white shadow-sm border-b py-2 pl-2 pr-6">
+            <div class="flex items-center justify-between">
+                <div class="ml-12 lg:ml-0 flex justify-between items-center space-x-3">
+                    <button id="sidebarToggle">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 -960 960 960" fill="#1f1f1f"><path d="M500-640v320l160-160-160-160ZM200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h560q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm120-80v-560H200v560h120Zm80 0h360v-560H400v560Zm-80 0H200h120Z"/></svg>
+                    </button>
+                    <h2 id="pageTitle" class="text-lg font-bold text-gray-800">Dashboard Overview</h2>  
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4 19h6v-2H4v2zM4 15h8v-2H4v2zM4 11h10V9H4v2z"></path>
+                        </svg>
+                    </button>
+                    <button class="p-2 text-gray-400 hover:text-gray-600 transition-colors relative">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM4 19h6v-2H4v2zM4 15h8v-2H4v2zM4 11h10V9H4v2z"></path>
+                        </svg>
+                        <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+                    </button>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="bg-white">
-                    <canvas id="myChart" width="400" height="300"></canvas>
-                    <script>
-                        var ctx = document.getElementById('myChart').getContext('2d');
-                        var myChart = new Chart(ctx, {
-                            type: 'bar',
-                            data: {
-                                labels: [{% for product in products %} "{{ product.name }}", {% endfor %}],
-                                datasets: [{
-                                    label: 'Products',
-                                    data: [{% for product in products %} {{ product.quantity }}, {% endfor %}],
-                                    backgroundColor: [
-                                        'rgba(255, 99, 132, 1)',
-                                        'rgba(54, 162, 235, 1)',
-                                        'rgba(255, 206, 86, 1)',
-                                        'rgba(75, 192, 192, 1)',
-                                        'rgba(153, 102, 255, 1)',
-                                        'rgba(255, 159, 64, 1)',        
-                                        'rgba(54, 162, 235, 1)',
-                                        'rgba(255, 206, 86, 1)',
-                                        'rgba(75, 192, 192, 1)',
-                                        'rgba(153, 102, 255, 1)',
-                                    ],
-                                    borderColor: [
-                                        'rgba(255, 99, 132, 1)',
-                                        'rgba(54, 162, 235, 1)',
-                                        'rgba(255, 206, 86, 1)',
-                                        'rgba(75, 192, 192, 1)',
-                                        'rgba(153, 102, 255, 1)',
-                                        'rgba(255, 159, 64, 1)'
+        </header>
 
-                                    ],
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            beginAtZero: true
-                                        }
-                                    }]
-                                }
-                            }
-                        });
-                    </script>
+        <!-- Content Sections -->
+        <main class="p-6 flex-1">
+            <!-- Overview Section -->
+            <div id="overviewSection" class="section-content fade-in">
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Total Assets</p>
+                                <p class="text-3xl font-bold text-gray-900 mt-2">1,247</p>
+                                <p class="text-sm text-green-600 mt-1">↗ 12% from last month</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Active Orders</p>
+                                <p class="text-3xl font-bold text-gray-900 mt-2">23</p>
+                                <p class="text-sm text-orange-600 mt-1">↗ 3 new today</p>
+                            </div>
+                            <div class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Staff Members</p>
+                                <p class="text-3xl font-bold text-gray-900 mt-2">156</p>
+                                <p class="text-sm text-green-600 mt-1">↗ 8 new hires</p>
+                            </div>
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Total Value</p>
+                                <p class="text-3xl font-bold text-gray-900 mt-2">$2.4M</p>
+                                <p class="text-sm text-purple-600 mt-1">↗ $180K this quarter</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Asset Distribution</h3>
+                        <div class="chart-container">
+                            <canvas id="assetChart" width="557" height="300" style="display: block; box-sizing: border-box; height: 300px; width: 557px;"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-xl shadow-sm border">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Monthly Orders</h3>
+                        <div class="chart-container">
+                            <canvas id="ordersChart" width="557" height="300" style="display: block; box-sizing: border-box; height: 300px; width: 557px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="bg-white rounded-xl shadow-sm border">
+                    <div class="p-6 border-b">
+                        <h3 class="text-lg font-semibold text-gray-800">Recent Activity</h3>
+                    </div>
+                    <div class="p-6">
+                        <div class="space-y-4">
+                            <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-800">New laptop added to inventory</p>
+                                    <p class="text-sm text-gray-600">MacBook Pro 16" - Serial: MBP2024001</p>
+                                </div>
+                                <span class="text-sm text-gray-500">2 hours ago</span>
+                            </div>
+
+                            <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                                <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-800">Order #ORD-2024-156 completed</p>
+                                    <p class="text-sm text-gray-600">Office chairs delivery confirmed</p>
+                                </div>
+                                <span class="text-sm text-gray-500">4 hours ago</span>
+                            </div>
+
+                            <div class="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                                <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z"></path>
+                                    </svg>
+                                </div>
+                                <div class="flex-1">
+                                    <p class="font-medium text-gray-800">Asset maintenance required</p>
+                                    <p class="text-sm text-gray-600">Printer HP-LJ-001 needs service</p>
+                                </div>
+                                <span class="text-sm text-gray-500">1 day ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Staff Section -->
+            <div id="staffSection" class="section-content fade-in hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800">Staff Management</h3>
+                        <p class="text-gray-600">Manage your team members and their asset assignments</p>
+                    </div>
+                    <button id="addStaffBtn" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <span>Add Staff Member</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Employee</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assets Assigned</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="staffTableBody" class="bg-white divide-y divide-gray-200">
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-semibold text-sm">SJ</span>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-900">Sarah Johnson</div>
+                            <div class="text-sm text-gray-500">sarah.j@company.com</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">IT</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">3 assets</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-blue-600 hover:text-blue-900 mr-3" onclick="editStaff(1)">Edit</button>
+                    <button class="text-red-600 hover:text-red-900" onclick="deleteStaff(1)">Delete</button>
+                </td>
+            </tr>
+        
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-semibold text-sm">MC</span>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-900">Mike Chen</div>
+                            <div class="text-sm text-gray-500">mike.c@company.com</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Marketing</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2 assets</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-blue-600 hover:text-blue-900 mr-3" onclick="editStaff(2)">Edit</button>
+                    <button class="text-red-600 hover:text-red-900" onclick="deleteStaff(2)">Delete</button>
+                </td>
+            </tr>
+        
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-semibold text-sm">ED</span>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-900">Emily Davis</div>
+                            <div class="text-sm text-gray-500">emily.d@company.com</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Finance</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">1 assets</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">On Leave</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-blue-600 hover:text-blue-900 mr-3" onclick="editStaff(3)">Edit</button>
+                    <button class="text-red-600 hover:text-red-900" onclick="deleteStaff(3)">Delete</button>
+                </td>
+            </tr>
+        
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-semibold text-sm">JW</span>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-900">James Wilson</div>
+                            <div class="text-sm text-gray-500">james.w@company.com</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Operations</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">4 assets</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-blue-600 hover:text-blue-900 mr-3" onclick="editStaff(4)">Edit</button>
+                    <button class="text-red-600 hover:text-red-900" onclick="deleteStaff(4)">Delete</button>
+                </td>
+            </tr>
+        
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-semibold text-sm">LB</span>
+                        </div>
+                        <div class="ml-4">
+                            <div class="text-sm font-medium text-gray-900">Lisa Brown</div>
+                            <div class="text-sm text-gray-500">lisa.b@company.com</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">HR</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">2 assets</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-blue-600 hover:text-blue-900 mr-3" onclick="editStaff(5)">Edit</button>
+                    <button class="text-red-600 hover:text-red-900" onclick="deleteStaff(5)">Delete</button>
+                </td>
+            </tr>
+        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Section -->
+            <div id="ordersSection" class="section-content fade-in hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800">Order Management</h3>
+                        <p class="text-gray-600">Track and manage asset procurement orders</p>
+                    </div>
+                    <button id="createOrderBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <span>Create Order</span>
+                    </button>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Supplier</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Items</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ordersTableBody" class="bg-white divide-y divide-gray-200">
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ORD-2024-156</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">TechCorp Solutions</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Office Chairs (10)</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$2,500</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Delivered</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-blue-600 hover:text-blue-900 mr-3" onclick="viewOrder('ORD-2024-156')">View</button>
+                    <button class="text-green-600 hover:text-green-900" onclick="updateOrderStatus('ORD-2024-156')">Update</button>
+                </td>
+            </tr>
+        
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ORD-2024-157</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Digital Supplies Inc</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Laptops (5)</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$12,500</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">In Transit</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-blue-600 hover:text-blue-900 mr-3" onclick="viewOrder('ORD-2024-157')">View</button>
+                    <button class="text-green-600 hover:text-green-900" onclick="updateOrderStatus('ORD-2024-157')">Update</button>
+                </td>
+            </tr>
+        
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ORD-2024-158</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Office Essentials</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Desks (8)</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$4,800</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Processing</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-blue-600 hover:text-blue-900 mr-3" onclick="viewOrder('ORD-2024-158')">View</button>
+                    <button class="text-green-600 hover:text-green-900" onclick="updateOrderStatus('ORD-2024-158')">Update</button>
+                </td>
+            </tr>
+        
+            <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">ORD-2024-159</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Tech Hardware Ltd</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">Monitors (12)</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">$3,600</td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">Pending</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <button class="text-blue-600 hover:text-blue-900 mr-3" onclick="viewOrder('ORD-2024-159')">View</button>
+                    <button class="text-green-600 hover:text-green-900" onclick="updateOrderStatus('ORD-2024-159')">Update</button>
+                </td>
+            </tr>
+        </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Section -->
+            <div id="productsSection" class="section-content hidden">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
+                    <div>
+                        <h3 class="text-xl font-semibold text-gray-800">Asset Catalog</h3>
+                        <p class="text-gray-600">View and manage all assets in your inventory</p>
+                    </div>
+                    <button id="addAssetBtn" class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors flex items-center space-x-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                        <span>Add Asset</span>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="assetsGrid">
+            <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                        </svg>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">In Use</span>
+                </div>
+                
+                <h4 class="font-semibold text-gray-800 mb-2">MacBook Pro 16"</h4>
+                <p class="text-sm text-gray-600 mb-1">ID: AST-001</p>
+                <p class="text-sm text-gray-600 mb-1">Category: Laptop</p>
+                <p class="text-sm text-gray-600 mb-1">Location: IT Department</p>
+                <p class="text-sm text-gray-600 mb-3">Assigned to: Sarah Johnson</p>
+                
+                <div class="flex items-center justify-between">
+                    <span class="font-semibold text-gray-800">$2,500</span>
+                    <div class="flex space-x-2">
+                        <button class="text-blue-600 hover:text-blue-800 text-sm" onclick="editAsset('AST-001')">Edit</button>
+                        <button class="text-green-600 hover:text-green-800 text-sm" onclick="assignAsset('AST-001')">Assign</button>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                        </svg>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Available</span>
+                </div>
+                
+                <h4 class="font-semibold text-gray-800 mb-2">Dell Monitor 27"</h4>
+                <p class="text-sm text-gray-600 mb-1">ID: AST-002</p>
+                <p class="text-sm text-gray-600 mb-1">Category: Monitor</p>
+                <p class="text-sm text-gray-600 mb-1">Location: Marketing</p>
+                <p class="text-sm text-gray-600 mb-3">Unassigned</p>
+                
+                <div class="flex items-center justify-between">
+                    <span class="font-semibold text-gray-800">$350</span>
+                    <div class="flex space-x-2">
+                        <button class="text-blue-600 hover:text-blue-800 text-sm" onclick="editAsset('AST-002')">Edit</button>
+                        <button class="text-green-600 hover:text-green-800 text-sm" onclick="assignAsset('AST-002')">Assign</button>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                        </svg>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">In Use</span>
+                </div>
+                
+                <h4 class="font-semibold text-gray-800 mb-2">iPhone 15 Pro</h4>
+                <p class="text-sm text-gray-600 mb-1">ID: AST-003</p>
+                <p class="text-sm text-gray-600 mb-1">Category: Mobile</p>
+                <p class="text-sm text-gray-600 mb-1">Location: Executive Office</p>
+                <p class="text-sm text-gray-600 mb-3">Assigned to: Mike Chen</p>
+                
+                <div class="flex items-center justify-between">
+                    <span class="font-semibold text-gray-800">$1,200</span>
+                    <div class="flex space-x-2">
+                        <button class="text-blue-600 hover:text-blue-800 text-sm" onclick="editAsset('AST-003')">Edit</button>
+                        <button class="text-green-600 hover:text-green-800 text-sm" onclick="assignAsset('AST-003')">Assign</button>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                        </svg>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Maintenance</span>
+                </div>
+                
+                <h4 class="font-semibold text-gray-800 mb-2">HP Printer LaserJet</h4>
+                <p class="text-sm text-gray-600 mb-1">ID: AST-004</p>
+                <p class="text-sm text-gray-600 mb-1">Category: Printer</p>
+                <p class="text-sm text-gray-600 mb-1">Location: Finance</p>
+                <p class="text-sm text-gray-600 mb-3">Unassigned</p>
+                
+                <div class="flex items-center justify-between">
+                    <span class="font-semibold text-gray-800">$800</span>
+                    <div class="flex space-x-2">
+                        <button class="text-blue-600 hover:text-blue-800 text-sm" onclick="editAsset('AST-004')">Edit</button>
+                        <button class="text-green-600 hover:text-green-800 text-sm" onclick="assignAsset('AST-004')">Assign</button>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                        </svg>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">In Use</span>
+                </div>
+                
+                <h4 class="font-semibold text-gray-800 mb-2">Surface Pro 9</h4>
+                <p class="text-sm text-gray-600 mb-1">ID: AST-005</p>
+                <p class="text-sm text-gray-600 mb-1">Category: Tablet</p>
+                <p class="text-sm text-gray-600 mb-1">Location: Sales</p>
+                <p class="text-sm text-gray-600 mb-3">Assigned to: Emily Davis</p>
+                
+                <div class="flex items-center justify-between">
+                    <span class="font-semibold text-gray-800">$1,100</span>
+                    <div class="flex space-x-2">
+                        <button class="text-blue-600 hover:text-blue-800 text-sm" onclick="editAsset('AST-005')">Edit</button>
+                        <button class="text-green-600 hover:text-green-800 text-sm" onclick="assignAsset('AST-005')">Assign</button>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="bg-white rounded-xl shadow-sm border p-6 hover:shadow-md transition-shadow">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                        </svg>
+                    </div>
+                    <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Available</span>
+                </div>
+                
+                <h4 class="font-semibold text-gray-800 mb-2">Logitech Webcam</h4>
+                <p class="text-sm text-gray-600 mb-1">ID: AST-006</p>
+                <p class="text-sm text-gray-600 mb-1">Category: Accessory</p>
+                <p class="text-sm text-gray-600 mb-1">Location: HR</p>
+                <p class="text-sm text-gray-600 mb-3">Unassigned</p>
+                
+                <div class="flex items-center justify-between">
+                    <span class="font-semibold text-gray-800">$150</span>
+                    <div class="flex space-x-2">
+                        <button class="text-blue-600 hover:text-blue-800 text-sm" onclick="editAsset('AST-006')">Edit</button>
+                        <button class="text-green-600 hover:text-green-800 text-sm" onclick="assignAsset('AST-006')">Assign</button>
+                    </div>
                 </div>
             </div>
         </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div id="profileSection" class="section-content hidden">
+                <div class="max-w-4xl mx-auto">
+                    <!-- Profile Header -->
+                    <div class="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 mb-8 text-white">
+                        <div class="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
+                            <div class="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                <span class="text-3xl font-bold" id="profileInitials">JD</span>
+                            </div>
+                            <div class="text-center md:text-left">
+                                <h2 class="text-3xl font-bold" id="profileDisplayName">John Doe</h2>
+                                <p class="text-blue-100 text-lg" id="profileRole">System Administrator</p>
+                                <p class="text-blue-100" id="profileEmail">john.doe@company.com</p>
+                            </div>
+                            <div class="ml-auto">
+                                <button id="editProfileBtn" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-3 rounded-lg transition-colors flex items-center space-x-2">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                    </svg>
+                                    <span>Edit Profile</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        <!-- Profile Information -->
+                        <div class="lg:col-span-2 space-y-8">
+                            <!-- Personal Information -->
+                            <div class="bg-white rounded-xl shadow-sm border p-6">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-6">Personal Information</h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                        <p class="text-gray-900 bg-gray-50 px-4 py-3 rounded-lg" id="profileFirstName">John</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                        <p class="text-gray-900 bg-gray-50 px-4 py-3 rounded-lg" id="profileLastName">Doe</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                                        <p class="text-gray-900 bg-gray-50 px-4 py-3 rounded-lg" id="profileEmailField">john.doe@company.com</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                                        <p class="text-gray-900 bg-gray-50 px-4 py-3 rounded-lg" id="profilePhone">+1 (555) 123-4567</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Department</label>
+                                        <p class="text-gray-900 bg-gray-50 px-4 py-3 rounded-lg" id="profileDepartment">IT</p>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-medium text-gray-700 mb-2">Employee ID</label>
+                                        <p class="text-gray-900 bg-gray-50 px-4 py-3 rounded-lg" id="profileEmployeeId">EMP-001</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Account Settings -->
+                            <div class="bg-white rounded-xl shadow-sm border p-6">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-6">Account Settings</h3>
+                                <div class="space-y-6">
+                                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                        <div>
+                                            <h4 class="font-medium text-gray-800">Email Notifications</h4>
+                                            <p class="text-sm text-gray-600">Receive notifications about asset assignments and updates</p>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" class="sr-only peer" checked="">
+                                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                        <div>
+                                            <h4 class="font-medium text-gray-800">SMS Notifications</h4>
+                                            <p class="text-sm text-gray-600">Receive text messages for urgent asset-related updates</p>
+                                        </div>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" class="sr-only peer">
+                                            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                        </label>
+                                    </div>
+
+                                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                                        <div>
+                                            <h4 class="font-medium text-gray-800">Two-Factor Authentication</h4>
+                                            <p class="text-sm text-gray-600">Add an extra layer of security to your account</p>
+                                        </div>
+                                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors text-sm">
+                                            Enable 2FA
+                                        </button>
+                                    </div>
+
+                                    <div class="pt-4 border-t">
+                                        <button id="changePasswordBtn" class="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors flex items-center space-x-2">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                            </svg>
+                                            <span>Change Password</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sidebar Information -->
+                        <div class="space-y-6">
+                            <!-- Quick Stats -->
+                            <div class="bg-white rounded-xl shadow-sm border p-6">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-4">My Assets</h3>
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-gray-600">Assigned Assets</span>
+                                        <span class="font-semibold text-gray-800">3</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-gray-600">Pending Requests</span>
+                                        <span class="font-semibold text-orange-600">1</span>
+                                    </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-gray-600">Total Value</span>
+                                        <span class="font-semibold text-green-600">$4,200</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Recent Activity -->
+                            <div class="bg-white rounded-xl shadow-sm border p-6">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-4">Recent Activity</h3>
+                                <div class="space-y-3">
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
+                                        <div>
+                                            <p class="text-sm text-gray-800">MacBook Pro assigned</p>
+                                            <p class="text-xs text-gray-500">2 hours ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
+                                        <div>
+                                            <p class="text-sm text-gray-800">Profile updated</p>
+                                            <p class="text-xs text-gray-500">1 day ago</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-start space-x-3">
+                                        <div class="w-2 h-2 bg-orange-500 rounded-full mt-2"></div>
+                                        <div>
+                                            <p class="text-sm text-gray-800">Asset request submitted</p>
+                                            <p class="text-xs text-gray-500">3 days ago</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Quick Actions -->
+                            <div class="bg-white rounded-xl shadow-sm border p-6">
+                                <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
+                                <div class="space-y-3">
+                                    <button class="w-full text-left p-3 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-3">
+                                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium text-gray-700">Request New Asset</span>
+                                    </button>
+                                    <button class="w-full text-left p-3 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-3">
+                                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium text-gray-700">View My Assets</span>
+                                    </button>
+                                    <button class="w-full text-left p-3 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-3">
+                                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0h6m-6 0l-2 9a2 2 0 002 2h8a2 2 0 002-2l-2-9m-6 0V7"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium text-gray-700">Report Issue</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-white border-t mt-12">
+            <div class="px-6 py-8">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <!-- Company Info -->
+                    <div class="col-span-1 md:col-span-2">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800">AssetTrack Pro</h3>
+                                <p class="text-sm text-gray-500">Professional Asset Management</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-4 max-w-md">
+                            Streamline your asset management with our comprehensive platform. Track, manage, and optimize your organization's resources efficiently.
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"></path>
+                                </svg>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"></path>
+                                </svg>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-blue-600 transition-colors">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.097.118.112.221.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.748-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001.012.001z"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links -->
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 uppercase tracking-wider mb-4">Quick Links</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-600 hover:text-blue-600 transition-colors text-sm">Dashboard</a></li>
+                            <li><a href="#" class="text-gray-600 hover:text-blue-600 transition-colors text-sm">Asset Catalog</a></li>
+                            <li><a href="#" class="text-gray-600 hover:text-blue-600 transition-colors text-sm">Staff Directory</a></li>
+                            <li><a href="#" class="text-gray-600 hover:text-blue-600 transition-colors text-sm">Order History</a></li>
+                            <li><a href="#" class="text-gray-600 hover:text-blue-600 transition-colors text-sm">Reports</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Support -->
+                    <div>
+                        <h4 class="text-sm font-semibold text-gray-800 uppercase tracking-wider mb-4">Support</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-600 hover:text-blue-600 transition-colors text-sm">Help Center</a></li>
+                            <li><a href="#" class="text-gray-600 hover:text-blue-600 transition-colors text-sm">Documentation</a></li>
+                            <li><a href="#" class="text-gray-600 hover:text-blue-600 transition-colors text-sm">API Reference</a></li>
+                            <li><a href="#" class="text-gray-600 hover:text-blue-600 transition-colors text-sm">Contact Support</a></li>
+                            <li><a href="#" class="text-gray-600 hover:text-blue-600 transition-colors text-sm">System Status</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Bottom Bar -->
+                <div class="border-t mt-8 pt-6 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                    <div class="flex items-center space-x-6 text-sm text-gray-600">
+                        <span>© 2024 AssetTrack Pro. All rights reserved.</span>
+                        <a href="#" class="hover:text-blue-600 transition-colors">Privacy Policy</a>
+                        <a href="#" class="hover:text-blue-600 transition-colors">Terms of Service</a>
+                    </div>
+                    <div class="flex items-center space-x-4 text-sm text-gray-600">
+                        <span>Version 2.1.0</span>
+                        <div class="flex items-center space-x-1">
+                            <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span>All systems operational</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
-    {% else %}
-        {% include 'dashboard/staff_index.html' %}
-    {% endif %}
 {% endblock %}
