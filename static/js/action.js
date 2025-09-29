@@ -17,11 +17,30 @@ function toggleSidebarMode() {
         sidebar.classList.add('w-16');
         
     }
-    console.log('clicked')
+}
+
+function showSection(sectionName) {
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('bg-blue-50', 'text-blue-600', 'border-r-2', 'border-blue-600');
+        item.classList.add('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-800');
+
+        if (item.dataset.section == sectionName) {
+            item.classList.remove('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-800');
+            item.classList.add('bg-blue-50', 'text-blue-600', 'border-r-2', 'border-blue-600');
+        }
+    })   
 }
 
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('expandSidebar').addEventListener('click', toggleSidebarMode);
-    document.getElementById('collapseSidebar').addEventListener('click', toggleSidebarMode);
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            const section = item.dataset.section;
+            showSection(section);
+        })
+    })
+
+    showSection('overview')
 })
+
 
