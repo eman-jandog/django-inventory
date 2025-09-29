@@ -64,7 +64,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const userMenu = document.getElementById('userMenu');
         
         if (!userMenu.classList.contains('hidden')) {
-            console.log('clicked');
             const userButton = event.target.closest('button');  
             
             if (!userButton || userButton.getAttribute('id') != 'btnProfile') {
