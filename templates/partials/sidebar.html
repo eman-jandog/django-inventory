@@ -88,19 +88,38 @@
                     </div>
                     <div class="text-start">
                         <p class="font-medium text-gray-800" id="userDisplayName">Admin</p>
-                        <p class="text-xs text-gray-500">Administrator</p>
+                        <p class="text-xs text-gray-500" id="userRole">Administrator</p>
                     </div>
                 </button>
             </div>
         </div>
     </div>
     <div id="userMenu" class="fixed lg:bottom-2 lg:left-18 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
-        <div class="px-4 py-2 text-sm text-gray-700 border-b">
-            <div class="font-medium" id="userFullName">Admin User</div>
-            <div class="text-gray-500" id="userEmail">admin@assettrack.com</div>
+        <div class="flex justify-start items-center space-x-3 p-2 text-sm text-gray-700 border-b">
+            <div class="flex-none">
+                <div class="flex justify-center items-center bg-blue-100 w-8 h-8 rounded-full text-xs">
+                    <span class-="font-medium">AD</span>
+                </div>
+            </div>
+            <div class="flex-1">
+                <div class="font-medium" id="userDisplayName">Admin</div>
+                <div class="text-gray-500 text-xs" id="userEmail">admin@assettrack.com</div>
+            </div>
         </div>
-        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile Settings</a>
-        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account</a>
-        <button onclick="logout()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</button>
+        
+        <button class="flex justify-start items-center w-full px-3 py-2 space-x-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+            <span class="font-small">Profile Settings</span>
+        </button>
+
+        <button class="flex justify-start items-center w-full px-3 py-2 space-x-2 text-sm text-gray-500 hover:bg-gray-100 hover:text-gray-700">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+            <span class="font-small">Sign out</span>
+        </button>
+
     </div>
 </div>
