@@ -79,18 +79,28 @@
             </div>
 
             <!-- User Avatar -->
-            <div class="flex justify-start items-center p-3 border-b space-x-6">
-                <div class="flex-none">
-                    <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                        <span class="text-blue-600 font-semibold text-xs">JD</span>
+            <div class="p-2">
+                <button id="btnProfile" class="w-full p-1 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-800 transition-colors flex items-center justify-start group relative space-x-5">
+                    <div class="flex-none">
+                        <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                            <span class="text-blue-600 font-semibold text-xs">JD</span>
+                        </div>
                     </div>
-                </div>
-                <div>
-                    <p class="font-medium text-gray-800" id="userDisplayName">Admin</p>
-                    <p class="text-xs text-gray-500">Administrator</p>
-                </div>
+                    <div>
+                        <p class="font-medium text-gray-800" id="userDisplayName">Admin</p>
+                        <p class="text-xs text-gray-500">Administrator</p>
+                    </div>
+                </button>
             </div>
         </div>
-
+    </div>
+    <div id="userMenu" class="fixed lg:bottom-2 lg:left-18 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+        <div class="px-4 py-2 text-sm text-gray-700 border-b">
+            <div class="font-medium" id="userFullName">Admin User</div>
+            <div class="text-gray-500" id="userEmail">admin@assettrack.com</div>
+        </div>
+        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile Settings</a>
+        <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account</a>
+        <button onclick="logout()" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</button>
     </div>
 </div>
