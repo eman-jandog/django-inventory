@@ -50,10 +50,12 @@
     <body class="bg-gray-50 font-sans">
         <div id="dashboardContainer" class="min-h-screen bg-gray-50">
             {% include 'partials/sidebar.html' %}
-            {% block content %}{% endblock %}
-        </div>
-        
-        
+            <div id="mainContent" class="min-h-screen flex flex-col transition-all duration-300 lg:ml-16">
+                {% include 'partials/header.html' %}
+                {% block main %}{% endblock %}
+                {% include 'partials/footer.html' %}
+            </div>
+        </div>        
     </body>
     <script src="{% static 'js/action.js' %}"></script>
 </html>

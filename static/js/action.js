@@ -44,7 +44,9 @@ function showSection(sectionName) {
             item.classList.remove('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-800');
             item.classList.add('bg-blue-50', 'text-blue-600', 'border-r-2', 'border-blue-600');
         }
-    })   
+    }) 
+
+    htmx.ajax("GET", `/${sectionName}/`, '#mainSection')
 }
 
 function toggleUserMenu() {

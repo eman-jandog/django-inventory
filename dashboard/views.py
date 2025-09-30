@@ -7,11 +7,10 @@ from .models import Product, Order
 from . import forms
 
 
-
 @login_required
 def home(request):
-    user = request.user
-
+    # user = request.user
+    '''
     if not user.is_staff or not user.is_superuser:
         orders = Order.objects.select_related('product').filter(staff=user.id)
         products = None
@@ -34,11 +33,23 @@ def home(request):
         'form': form,   
         'products': products
     }
+    '''
+    return render(request, 'dashboard/index.html')
 
-    return render(request, 'dashboard/index.html', context)
+def overview(request):
+    return render(request, 'dashboard/sections/overview.html')
+
+def staff(request):
+    return render(request, 'dashboard/sections/staff.html')
+
+def orders(request):
+    return render(request, 'dashboard/sections/orders.html')
+
+def assets(request):
+    return render(request, 'dashboard/sections/assets.html')
 
 @login_required
-def staff(request):
+def _staff(request):
     users = User.objects.all()
 
     context = {
