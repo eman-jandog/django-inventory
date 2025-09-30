@@ -4,6 +4,10 @@ AssetTrack Overview
 {% endblock %}
 {% block main %}
 <!-- Content Sections -->
-    <main id="mainSection" class="p-6 flex-1" hx-target="this" hx-get="{% url 'dashboard-staff' %}" hx-trigger="load">
+    <main id="mainSection" class="p-6 flex-1">
+        {% include 'dashboard/sections/overview.html' %}
+        {% include 'dashboard/sections/staff.html' %}
+        {% include 'dashboard/sections/orders.html' %}
+        {% include 'dashboard/sections/assets.html' %}
     </main>   
 {% endblock %}

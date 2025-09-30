@@ -39,14 +39,20 @@ function showSection(sectionName) {
     document.querySelectorAll('.nav-item').forEach(item => {
         item.classList.remove('bg-blue-50', 'text-blue-600', 'border-r-2', 'border-blue-600');
         item.classList.add('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-800');
-
-        if (item.dataset.section == sectionName) {
-            item.classList.remove('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-800');
-            item.classList.add('bg-blue-50', 'text-blue-600', 'border-r-2', 'border-blue-600');
-        }
     }) 
 
-    htmx.ajax("GET", `/${sectionName}/`, '#mainSection')
+    const btn = document.querySelector(`[data-section=${sectionName}]`)
+    btn.classList.remove('text-gray-600', 'hover:bg-gray-50', 'hover:text-gray-800');
+    btn.classList.add('bg-blue-50', 'text-blue-600', 'border-r-2', 'border-blue-600');
+
+    // htmx.ajax("GET", `/${sectionName}/`, '#mainSection')
+    document.querySelectorAll('.section-content').forEach(section => {
+        section.classList.add('hidden')
+    })
+
+    const section = document.querySelector(`#${sectionName}Section`)
+    section.classList.remove('hidden')
+    
 }
 
 function toggleUserMenu() {
@@ -182,7 +188,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     //  Initial Run
-    showSection('overview');
     toggleSidebarMode();
     initializeDashboard();
 })
