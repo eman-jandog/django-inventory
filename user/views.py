@@ -55,16 +55,13 @@ def profile_update(request):
         if userform.is_valid() and profileform.is_valid():
             userform.save()
             profileform.save()
-            onEdit = False
     else: 
         userform = UpdateUserForm(instance=request.user)
         profileform = UpdateUserProfileForm(instance=request.user.profile)
-        onEdit = True
 
     context = {
         'userform': userform,
-        'profileform': profileform,
-        'onEdit': onEdit
+        'profileform': profileform
     }
 
     return render(request, 'user/profile_update_form.html', context)
