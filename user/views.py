@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, resolve_url
 from django.http import HttpResponse
 from django.contrib.auth.views import LoginView as BaseLoginView
-from .forms import CreateRegisterForm, UpdateUserForm, UpdateUserProfileForm
+from .forms import CreateRegisterForm, UpdateProfileForm
 
 # Class based functions
 class LoginView(BaseLoginView):
@@ -50,18 +50,15 @@ def profile(request):
  
 def profile_update(request):
     if request.method == 'POST':
-        userform = UpdateUserForm(request.POST, instance=request.user)
-        profileform = UpdateUserProfileForm(request.POST, request.FILES, instance=request.user.profile)
-        if userform.is_valid() and profileform.is_valid():
-            userform.save()
-            profileform.save()
+        form = UpdateProfileForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+
     else: 
-        userform = UpdateUserForm(instance=request.user)
-        profileform = UpdateUserProfileForm(instance=request.user.profile)
+        form = UpdateProfileForm(instance=request.user)
 
     context = {
-        'userform': userform,
-        'profileform': profileform
+        'form': form
     }
 
     return render(request, 'user/profile_update_form.html', context)
