@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, resolve_url
 from django.http import HttpResponse
 from django.contrib.auth.views import LoginView as BaseLoginView
+from django.contrib.auth.models import User
 from .forms import CreateRegisterForm, UpdateProfileForm
+
 
 # Class based functions
 class LoginView(BaseLoginView):
@@ -46,14 +48,23 @@ def reset(request):
     return render(request, 'user/auth/password_reset.html')
 
 def profile(request):
-    return render(request, 'user/profile.html')
+    user = request.user 
+    abbr = (user.first_name[0] + user.last_name[0]).upper()
+    context = {
+        'abbr': abbr,
+        'fullname': f'{user.first_name} {user.last_name}',
+        'position': user.profile.position,
+        'department': user.profile.get_department_display(),
+        'email': user.email,
+        'phone_number': user.profile.phone_number
+    }
+    return render(request, 'user/profile.html', context)
  
 def profile_update(request):
     if request.method == 'POST':
         form = UpdateProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-
     else: 
         form = UpdateProfileForm(instance=request.user)
 
@@ -62,3 +73,6 @@ def profile_update(request):
     }
 
     return render(request, 'user/profile_update_form.html', context)
+
+def get_current_user(request):
+    return request.user
