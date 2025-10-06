@@ -1,3 +1,4 @@
+{% load user_filters %}
     <div class="mb-6">
             <h3 class="text-xl font-semibold text-gray-800">Account Profile</h3>
             <p class="text-gray-600">Manage your account settings and personal information.</p>
@@ -8,11 +9,11 @@
             <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <div class="text-center">
                     <div class="w-24 h-24 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span class="text-white text-2xl font-bold">{{ abbr }}</span>
+                        <span class="text-white text-2xl font-bold">{{ user|iconize }}</span>
                     </div>
                     <h3 class="text-xl font-bold text-gray-800 mb-1">{{ fullname }}</h3>
-                    <p class="text-gray-600 mb-2">{{ positon }}</p>
-                    <p class="text-sm text-gray-500 mb-4">{{ department }}</p>
+                    <p class="text-gray-600 mb-2">{{ position }}</p>
+                    <p class="text-sm text-gray-500 mb-2">{{ department }}</p>
                     
                     <div class="space-y-2 text-sm">
                         <div class="flex items-center justify-center space-x-2">

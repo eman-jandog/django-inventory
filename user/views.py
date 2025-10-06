@@ -48,10 +48,8 @@ def reset(request):
     return render(request, 'user/auth/password_reset.html')
 
 def profile(request):
-    user = request.user 
-    abbr = (user.first_name[0] + user.last_name[0]).upper()
+    user = request.user
     context = {
-        'abbr': abbr,
         'fullname': f'{user.first_name} {user.last_name}',
         'position': user.profile.position,
         'department': user.profile.get_department_display(),
@@ -73,6 +71,3 @@ def profile_update(request):
     }
 
     return render(request, 'user/profile_update_form.html', context)
-
-def get_current_user(request):
-    return request.user

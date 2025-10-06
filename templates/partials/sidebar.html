@@ -1,4 +1,5 @@
 <!-- Sidebar -->
+ {% load user_filters %}
 <div id="sidebar" class="fixed inset-y-0 left-0 z-40 bg-white shadow-xl transform -translate-x-full lg:translate-x-0 sidebar-transition truncate w-16" >
     <div id="fullSideBar" class="fixed inset-y-0 left-0 z-50 w-full bg-white shadow-xl flex flex-col">
         <!-- Logo -->
@@ -53,12 +54,12 @@
                 <div class="flex justify-start items-center space-x-5">
                     <div class="flex-none">
                         <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                            <span class="text-blue-600 font-semibold text-xs">JD</span>
+                    <span class="text-blue-600 font-semibold text-xs">{{ user|iconize }}</span>
                         </div>
                     </div>
                     <div class="text-start">
-                        <p class="font-medium text-gray-800" id="userDisplayName">Admin</p>
-                        <p class="text-xs text-gray-500" id="userRole">Administrator</p>
+                        <p class="font-medium text-gray-800" id="userDisplayName">{{ user.username }}</p>
+                        <p class="text-xs text-gray-500" id="userRole">{% if user.is_staff %}Administrator{%else%}User{% endif %}</p>
                     </div>
                 </div>
                 <div>
@@ -73,12 +74,12 @@
     <div class="flex justify-start items-center space-x-3 p-2 text-sm text-gray-700 border-b">
         <div class="flex-none">
             <div class="flex justify-center items-center bg-blue-100 w-8 h-8 rounded-full text-xs">
-                <span class-="font-medium">AD</span>
+                <span class-="font-medium">{{ user|iconize }}</span>
             </div>
         </div>
         <div class="flex-1">
-            <div class="font-medium" id="userDisplayName">Admin</div>
-            <div class="text-gray-500 text-xs" id="userEmail">admin@assettrack.com</div>
+            <div class="font-medium" id="userDisplayName">{{user.username}}</div>
+            <div class="text-gray-500 text-xs" id="userEmail">{{user.email}}</div>
         </div>
     </div>
     
