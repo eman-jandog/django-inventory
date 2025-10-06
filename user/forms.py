@@ -146,7 +146,7 @@ class UpdateProfileForm(forms.ModelForm):
         if commit:
             user.save()
 
-        profile, created = Profile.objects.get_or_create(user=user)
+        profile, created = Profile.objects.get_or_create(staff=user)
         profile.department = self.cleaned_data.get('department', profile.department)
         profile.position = self.cleaned_data.get('position', profile.position)
         profile.address = self.cleaned_data.get('address', profile.address)
