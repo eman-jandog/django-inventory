@@ -48,9 +48,6 @@ def orders(request):
 def assets(request):
     return render(request, 'dashboard/sections/assets.html')
 
-def profile(request):
-    return render(request, 'dashboard/sections/profile.html')
-
 @login_required
 def _staff(request):
     users = User.objects.all()
