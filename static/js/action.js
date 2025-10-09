@@ -131,8 +131,7 @@ function addOrderItem() {
     // Add event listeners to new item
     const removeBtn = newItem.querySelector('.remove-item');
     removeBtn.addEventListener('click', function() {
-        newItem.remove();
-        updateOrderTotal();
+        removeOrderItem(removeBtn)
     });
     
     const priceInputs = newItem.querySelectorAll('input[name="itemQuantity[]"], input[name="itemPrice[]"]');
@@ -152,6 +151,16 @@ function updateOrderTotal() {
     });
     
     document.getElementById('orderTotal').textContent = `$${total.toFixed(2)}`;
+}
+
+function removeOrderItem(btn) {
+    const items = document.querySelectorAll('.order-item');
+    if (items.length > 1) {
+        btn.closest('.order-item').remove();
+        updateOrderTotal();
+    } else {
+        alert('At least one item is required for an order.');
+    }
 }
 
 // Form submission handlers
@@ -323,6 +332,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Order item management
     document.getElementById('addOrderItem').addEventListener('click', addOrderItem);
+
+    // Initial setup for order items
+    document.querySelectorAll('.remove-item').forEach(btn => {
+        btn.addEventListener('click', function() {
+            removeOrderItem(btn)
+        });
+    });
+            
+    // Price calculation for order items
+    document.querySelectorAll('input[name="itemQuantity[]"], input[name="itemPrice[]"]').forEach(input => {
+        input.addEventListener('input', updateOrderTotal);
+    });
 
     // Sidebar buttons navigation
     document.querySelectorAll('.nav-item').forEach(item => {
