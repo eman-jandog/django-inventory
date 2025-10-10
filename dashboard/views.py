@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.views.generic import TemplateView
-from .models import Product, Order
+from .models import Asset, Order
 from . import forms
 
 
@@ -70,7 +70,7 @@ def staff_detail(request, id):
 
 @login_required
 def order(request):
-    orders = Order.objects.select_related('product','staff').all()
+    orders = Order.objects.select_related('asset','staff').all()
 
     for order in orders:
         order.date_ordered = order.date_ordered.strftime('%m-%d-%Y')
@@ -89,14 +89,14 @@ def order_cancel(request, id):
         return redirect('dashboard-home')
 
 @login_required
-def product(request):
-    products = Product.objects.all()
+def _asset(request):
+    assets = Asset.objects.all()
 
     if request.method == 'POST':
         product_form = forms.ProductForm(request.POST)
         if product_form.is_valid():
             product_form.save()
-            return redirect('dashboard-product')
+            return redirect('dashboard-assets')
     else:
         product_form = forms.ProductForm()
     
@@ -111,8 +111,8 @@ def product(request):
 def product_delete(request, id):
     if request.method == 'POST':
         try:
-            product = Product.objects.get(id=id)
-            product.delete()
+            asset = Asset.objects.get(id=id)
+            asset.delete()
         except Exception as e:
             print(e.message)
     
@@ -120,15 +120,15 @@ def product_delete(request, id):
 
 @login_required
 def product_update(request, id):
-    product = Product.objects.get(id=id)
+    asset = Asset.objects.get(id=id)
 
     if request.method == "POST":
-        update_form = forms.ProductForm(request.POST,instance=product)
+        update_form = forms.ProductForm(request.POST,instance=asset)
         if update_form.is_valid():
             update_form.save()
             return redirect('dashboard-product')
     else:
-        update_form = forms.ProductForm(instance=product)
+        update_form = forms.ProductForm(instance=asset)
         
     context = {
         'form': update_form

@@ -1,14 +1,14 @@
 from django.contrib import admin
-from .models import Product, Order
+from .models import Asset, Order
 
 admin.site.site_header = 'Admin Panel'
 
-class ProductAdmin(admin.ModelAdmin):
+class AssetAdmin(admin.ModelAdmin):
     list_display = ('name', 'quantity')
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('product', 'staff')
+    list_display = ('asset', 'staff')
 
 
-admin.site.register(Product, ProductAdmin)
+admin.site.register(Asset, AssetAdmin)
 admin.site.register(Order, OrderAdmin)

@@ -27,8 +27,8 @@ Order Page
                         {% for order in orders %}
                         <tr>
                             <th scope="row">{{ order.id }}</th>
-                            <td>{{ order.product.name }}</td>
-                            <td>{{ order.product.category }}</td>
+                            <td>{{ order.asset.name }}</td>
+                            <td>{{ order.asset.category }}</td>
                             <td>{{ order.order_quantity }}</td>
                             <td>{{ order.staff.username }}</td>
                             <td>{{ order.date_ordered }}</td>

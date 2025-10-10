@@ -67,10 +67,10 @@ Home Page
                         var myChart = new Chart(ctx, {
                             type: 'bar',
                             data: {
-                                labels: [{% for product in products %} "{{ product.name }}", {% endfor %}],
+                                labels: [{% for asset in assets %} "{{ asset.name }}", {% endfor %}],
                                 datasets: [{
                                     label: 'Products',
-                                    data: [{% for product in products %} {{ product.quantity }}, {% endfor %}],
+                                    data: [{% for asset in products %} {{ asset.quantity }}, {% endfor %}],
                                     backgroundColor: [
                                         'rgba(255, 99, 132, 1)',
                                         'rgba(54, 162, 235, 1)',
