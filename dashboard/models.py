@@ -33,3 +33,24 @@ class Order(models.Model):
 
     def __str__(self):
         return f'{self.product}'
+
+class Staff(models.Model):
+    DEPARTMENT_CHOICES = [
+        ('IT', 'Information Technology'),
+        ('HR', 'Human Resource'),
+        ('ADMIN', 'Administrative'),
+        ('FINANCE', 'Accounting & Finance'),
+        ('OPS', 'Operational')
+    ]
+
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    emai = models.EmailField()
+    department = models.CharField(max_length=50, choices=DEPARTMENT_CHOICES, null=True)
+    position = models.CharField(max_length=100, null=True)
+    address = models.CharField(max_length=200, null=True)
+    location = models.CharField(max_length=200, null=True)
+    phone_number = models.CharField(max_length=11, null=True)
+    start_date = models.DateField(null=True)
+    location = models.CharField(max_length=200)
+    notes = models.TextField(null=True)
