@@ -34,20 +34,20 @@ Product Page
                     </tr>
                 </thead>
                 <tbody>
-                    {% for product in products %}
+                    {% for asset in assets %}
                     <tr>
-                        <td>{{ product.name }}</td>
-                        <td>{{ product.category }}</td>
-                        <td>{{ product.quantity }}</td>
+                        <td>{{ asset.name }}</td>
+                        <td>{{ asset.category }}</td>
+                        <td>{{ asset.quantity }}</td>
                         <td>
                             <button 
                                 type="button" 
                                 class="btn btn-primary btn-sm" 
                                 data-bs-toggle="modal" 
                                 data-bs-target="#updateProductModal"
-                                data-product-url="{% url 'dashboard-product-update' product.id %}"
+                                data-asset-url="{% url 'dashboard-asset-update' asset.id %}"
                                 hx-target="#updateProductForm"
-                                hx-get="{% url 'dashboard-product-update' product.id %}"
+                                hx-get="{% url 'dashboard-asset-update' asset.id %}"
                                 hx-swap="innerHTML"
                                 >Edit
                             </button>
@@ -56,8 +56,8 @@ Product Page
                                 class="btn btn-danger btn-sm" 
                                 data-bs-toggle="modal" 
                                 data-bs-target="#deleteProductModal"
-                                data-product-name="{{ product.name }}"
-                                data-product-url="{% url 'dashboard-product-delete' product.id %}"
+                                data-asset-name="{{ asset.name }}"
+                                data-asset-url="{% url 'dashboard-asset-delete' asset.id %}"
                                 >Delete
                             </button>
                         </td>

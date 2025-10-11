@@ -1,12 +1,12 @@
 from django.forms import ModelForm
-from .models import Product, Order
+from .models import Asset, Order
 
-class ProductForm(ModelForm):
+class AssetForm(ModelForm):
     class Meta:
-        model = Product
+        model = Asset
         fields = ['name','quantity','category']
 
 class OrderForm(ModelForm):
     class Meta:
         model = Order
-        fields = ['product','order_quantity']
+        fields = ['asset','order_quantity']

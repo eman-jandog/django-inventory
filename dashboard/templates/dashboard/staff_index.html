@@ -33,9 +33,9 @@
                         <tbody>
                             {% for order in orders %}
                             <tr>
-                                <td>{{ order.product.name }}</td>
-                                <td>{{ order.product.category}}</td>
-                                <td>{{ order.product.quantity}}</td>
+                                <td>{{ order.asset.name }}</td>
+                                <td>{{ order.asset.category}}</td>
+                                <td>{{ order.asset.quantity}}</td>
                                 <td>
                                     <form method="POST" action="{% url 'dashboard-order-cancel' order.id %}">
                                         {% csrf_token %}
