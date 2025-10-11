@@ -18,6 +18,8 @@ class Asset(models.Model):
 
     name = models.CharField(max_length=100)
     category = models.CharField(max_length=50, choices=ASSET_CATEGORY, null=True)
+    brand = models.CharField(max_length=50)
+    serial_number = models.IntegerField(max_length=50)
     quantity = models.PositiveIntegerField(default=0)
     last_update = models.DateTimeField(auto_now=True)
 
