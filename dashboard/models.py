@@ -16,11 +16,25 @@ class Asset(models.Model):
         ('MISC', 'Miscellaneous')
     ]
 
-    name = models.CharField(max_length=100)
+    STATUS_CATEGORY = [
+        ('Available', 'Available'),
+        ('In Use', 'In Use'),
+        ('Under Maintenance', 'Under Maintenance'),
+        ('Retired', 'Retired')
+    ]
+
+    name = models.CharField(max_length=100, null=True)
+    track_id = models.CharField(max_length=100, null=True)
     category = models.CharField(max_length=50, choices=ASSET_CATEGORY, null=True)
-    brand = models.CharField(max_length=50)
-    serial_number = models.IntegerField(max_length=50)
-    quantity = models.PositiveIntegerField(default=0)
+    brand = models.CharField(max_length=50,null=True)
+    sn = models.CharField(max_length=50, null=True)
+    price = models.PositiveIntegerField(default=0, null=True)
+    date_purchase = models.DateField(null=True)
+    date_warranty = models.DateField(null=True)
+    status = models.CharField(max_length=50, choices=STATUS_CATEGORY, default='Available')
+    location = models.TextField(null=True)
+    supplier = models.CharField(max_length=100, null=True)
+    description = models.TextField(null=True)
     last_update = models.DateTimeField(auto_now=True)
 
     def __str__(self):
